@@ -1,0 +1,66 @@
+
+from super_heroes_data import superheroes
+from collections import deque
+
+# 1. Orden ascendente por nombre
+print("--- 1. ORDENADOS POR NOMBRE ---")
+for p in sorted(superheroes, key=lambda x: x["name"]):
+    print(p["name"])
+print()
+# 2. Posición de The Thing y Rocket Raccoon
+print("--- 2. POSICIÓN DE PERSONAJES ---")
+for nombre in ["The Thing", "Rocket Raccoon"]:
+    for i, p in enumerate(superheroes):
+        if p["name"] == nombre:
+            print(f"{nombre} está en la posición {i}")
+print()
+# 3. Listar villanos
+print("--- 3. LISTADO DE VILLANOS ---")
+for p in superheroes:
+    if p["is_villain"]:
+        print(p["name"])
+print()
+# 4. Cola de villanos (aparecidos antes de 1980)
+print("--- 4. VILLANOS ANTES DE 1980 ---")
+cola = deque([p for p in superheroes if p["is_villain"]])
+while cola:
+    p = cola.popleft()
+    if p["first_appearance"] < 1980:
+        print(f"{p['name']} ({p['first_appearance']})")
+print()
+# 5. Superhéroes que comienzan con Bl, G, My, W
+print("--- 5. INICIALES BL, G, MY, W ---")
+for p in superheroes:
+    if p["name"].startswith(("Bl", "G", "My", "W")):
+        print(p["name"])
+print()
+# 6. Ordenado por nombre real
+print("--- 6. ORDENADOS POR NOMBRE REAL ---")
+for p in sorted(superheroes, key=lambda x: x["real_name"] or ""):
+    print(f"{p['name']}: {p['real_name']}")
+print()
+# 7. Superhéroes por fecha de aparición
+print("--- 7. SUPERHÉROES POR FECHA ---")
+for p in sorted([p for p in superheroes if not p["is_villain"]], key=lambda x: x["first_appearance"]):
+    print(f"{p['first_appearance']} - {p['name']}")
+print()
+# 8. Modificar nombre real de Ant Man
+for p in superheroes:
+    if p["name"] == "Ant Man":
+        p["real_name"] = "Scott Lang"
+        print("--- 8. ANT MAN ACTUALIZADO ---")
+        print(f"Nuevo nombre: {p['real_name']}")
+print()
+# 9. Biografía contiene 'time-traveling' o 'suit'
+print("--- 9. BIO CON 'time-traveling' O 'suit' ---")
+for p in superheroes:
+    if "time-traveling" in p["short_bio"] or "suit" in p["short_bio"]:
+        print(p["name"])
+print()
+# 10. Eliminar Electro y Baron Zemo
+print("--- 10. ELIMINAR ELECTRO Y ZEMO ---")
+for nombre in ["Electro", "Baron Zemo"]:
+    for p in superheroes:
+        if p["name"] == nombre:
+            print(f"Eliminando a: {p}")
+            superheroes.remove(p)
