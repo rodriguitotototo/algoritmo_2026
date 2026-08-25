@@ -1,0 +1,122 @@
+
+from super_heroes_data import superheroes
+from list_ import List
+from queue_ import Queue
+
+class PersonajeMarvel:
+    def __init__(self, data: dict):
+        self.name = data["name"]
+        self.real_name = data["real_name"] if data["real_name"] else "N/A"
+        self.year = data["first_appearance"]
+        self.is_villain = data["is_villain"]
+        self.bio = data["short_bio"]
+
+    def __str__(self):
+        bando = "Villano" if self.is_villain else "Héroe"
+        return f"{self.name} ({self.real_name}) - Año: {self.year} - {bando}"
+
+# Inicializar lista
+lista_marvel = List()
+
+
+for d in superheroes:
+    lista_marvel.append(PersonajeMarvel(d))
+
+lista_marvel.add_criterion('name', lambda p: p.name.lower())
+lista_marvel.add_criterion('real_name', lambda p: p.real_name.lower())
+lista_marvel.add_criterion('year', lambda p: p.year)
+
+
+print("--- A) LISTADO")
+lista_marvel.sort_by_criterion('name')
+lista_marvel.show()
+
+
+print("\n--- B) ")
+# Buscamos en minúsculas por el truco del lambda
+pos_thing = lista_marvel.search("the thing", 'name')
+pos_rocket = lista_marvel.search("rocket raccoon", 'name')
+
+if pos_thing is not None: 
+    print(f"The Thing está en la posición {pos_thing} -> {lista_marvel[pos_thing]}")
+else:
+    print("The Thing no encontrado.")
+
+if pos_rocket is not None: 
+    print(f"Rocket Raccoon está en la posición {pos_rocket} -> {lista_marvel[pos_rocket]}")
+else:
+    print("Rocket Raccoon no encontrado.")
+
+
+print("\n--- C)")
+for p in lista_marvel:
+    if p.is_villain:
+        print(p)
+
+
+print("\n--- D)")
+cola_villanos = Queue()
+
+# Encolamos los villanos
+for p in lista_marvel:
+    if p.is_villain:
+        cola_villanos.arrive(p)
+
+print("Aparecieron antes de 1980:")
+
+for _ in range(cola_villanos.size()):
+    villano = cola_villanos.move_to_end()
+    if villano.year < 1980:
+        print(villano)
+
+
+print("\n--- E) ")
+prefijos = ('Bl', 'G', 'My', 'W')
+for p in lista_marvel:
+  
+    if not p.is_villain and p.name.startswith(prefijos):
+        print(p)
+
+
+print("\n--- F) ")
+lista_marvel.sort_by_criterion('real_name')
+lista_marvel.show()
+
+
+print("\n--- G) SUPERHÉROES ORDENADOS POR FECHA DE APARICIÓN ---")
+lista_marvel.sort_by_criterion('year')
+for p in lista_marvel:
+    if not p.is_villain: # Solo superhéroes
+        print(p)
+
+
+print("\n--- H) ")
+
+pos_antman = lista_marvel.search("ant man", 'name')
+if pos_antman is not None:
+    print(f"Antes: {lista_marvel[pos_antman]}")
+    lista_marvel[pos_antman].real_name = "Scott Lang"
+    print(f"Después: {lista_marvel[pos_antman]}")
+else:
+    print("Ant Man no encontrado.")
+
+
+print("\n--- I) ")
+
+lista_marvel.filter_contain_on_bio(['time-traveling', 'suit'])
+
+
+print("\n--- J) ELIMINAR A ELECTRO Y BARON ZEMO")
+
+electro = lista_marvel.delete_value("electro", 'name')
+zemo = lista_marvel.delete_value("baron zemo", 'name')
+
+if electro: 
+    print(f"Eliminado: {electro}")
+else:
+    print("Electro no estaba en la lista.")
+
+if zemo: 
+    print(f"Eliminado: {zemo}")
+else:
+    print("Baron Zemo no estaba en la lista.")

@@ -1,4 +1,3 @@
-
 from super_heroes_data import superheroes
 from collections import deque
 

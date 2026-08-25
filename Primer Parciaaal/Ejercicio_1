@@ -1,6 +1,6 @@
 
 superheroes = [
-    "Spider-Man", "Iron Man", "Capitan America", "Thor", "Hulk",
+    "Spider-Man", "Iron Man", "Capitan ", "Thor", "Hulk",
     "Black Widow", "Hawkeye", "Doctor Strange", "Black Panther",
     "Ant-Man", "Scarlet Witch", "Vision", "Wolverine", "Cyclops", "Storm"
 ]
